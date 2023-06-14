@@ -14,5 +14,5 @@ _Sample DevOps pipelines are also included in this folder_
 
 # How to use
 
-Please follow the instructions [here](resource_fw/readme.md)
+Please follow the instructions [here](resource_fw/README.md)
 
