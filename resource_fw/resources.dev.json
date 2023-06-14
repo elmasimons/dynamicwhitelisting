@@ -1,0 +1,7 @@
+[
+    {
+        "resource_group_name": "Sandbox_Elma",
+        "resource_type": "kv",
+        "resource_name": "elmsandboxakv"
+    }    
+]

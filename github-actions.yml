@@ -1,0 +1,44 @@
+name: 'Setup IP Whitelisting'
+description: 'Sets up IP Whitelisting'
+inputs:
+  resourcesPath:
+    description: 'Pass the Azure Resources filepath that needs to be whitelisted'
+    required: true
+  isShellRequired: 
+    description: 'Pass boolean if whitelist of Azure Resources need to be done using AZ-CLI, false implicates Azure Powershell to be run'
+    required: true
+  isLockRequired:
+    description: 'Pass boolean if Azure Resources need to be locked, false implicates Resources will be unlocked'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash
+
+    - name: Unlock Az Resources With Shell
+      run: unlock_resource_fw.sh --json-file ${{ inputs.resourcesPath }}
+      if: ${{ inputs.isShellRequired == 'true' && inputs.isLockRequired == 'false'}}
+      shell: bash
+      
+    - name: Lock Az Resources With Shell
+      run: lock_resource_fw.sh --json-file ${{ inputs.resourcesPath }}
+      if: ${{ always() && inputs.isShellRequired == 'true' && inputs.isLockRequired == 'true' }}
+      shell: bash
+
+    - name: Unlock Az Resources With Powershell
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: "latest"
+        inlineScript: |
+          unlock_resource_fw.ps1 -JsonFile ${{ inputs.resourcesPath }}
+      if: ${{ inputs.isShellRequired == 'false' && inputs.isLockRequired == 'false' }}
+
+    - name: Lock Az Resources With Powershell
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: "latest"
+        inlineScript: |
+          lock_resource_fw.ps1 -JsonFile ${{ inputs.resourcesPath }}
+      if: ${{ always() && inputs.isShellRequired == 'false' && inputs.isLockRequired == 'true' }}

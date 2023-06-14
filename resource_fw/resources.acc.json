@@ -1,0 +1,12 @@
+[
+    {
+        "resource_group_name": "<enter-your-RG-name-here>",
+        "resource_type": "kv",
+        "resource_name": "<enter-your-kv-name-here>"
+    },
+    {
+        "resource_group_name": "<enter-your-RG-name-here>",
+        "resource_type": "st",
+        "resource_name": "<enter-your-storage-name-here>"
+    }
+]
